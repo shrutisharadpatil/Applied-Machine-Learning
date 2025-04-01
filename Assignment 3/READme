@@ -1,9 +1,0 @@
-Unit Testing  
-In `score.py`, write a function with the following signature that scores a trained model on a text:
-
-```python
-def score(text: str, 
-          model: sklearn.estimator, 
-          threshold: float) -> tuple:
-    prediction: bool, 
-    propensity: float
