@@ -1,6 +1,8 @@
 Flask
-sklearn
+scikit-learn
+pytest==8.0.0
+pytest-cov==4.1.0
+flask-cors==4.0.0
 pandas
 numpy
-pytest
 requests
