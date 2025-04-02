@@ -5,7 +5,7 @@ import pickle
 
 def train_and_save():
     try:
-        train = pd.read_csv('../Assignment2/data/train.csv')
+        train = pd.read_csv('../Assignment 2/train.csv')
 
         if 'text' not in train.columns or 'label' not in train.columns:
             raise ValueError("Missing 'text' or 'label' column in train.csv")
