@@ -1,23 +1,29 @@
+import pickle
 from flask import Flask, request, jsonify
-import joblib
 from score import score
-from flask_ngrok import run_with_ngrok
 
 app = Flask(__name__)
-run_with_ngrok(app)  # Allows access via ngrok
 
-# Load the trained model
-model = joblib.load('model.pkl')
+# Load trained model and vectorizer
+with open("model.pkl", "rb") as f:
+    model = pickle.load(f)
 
 @app.route('/score', methods=['POST'])
-def score_endpoint():
+def get_score():
     data = request.get_json()
-    text = data.get('text', '')
-    threshold = data.get('threshold', 0.5)
+    text = data.get("text", "")
 
-    prediction, propensity = score(text, model, threshold)
+    if not text:
+        return jsonify({"error": "No text provided"}), 400
 
-    return jsonify({'prediction': prediction, 'propensity': propensity})
+    prediction, propensity = score(text, model, threshold=0.7)
+    response = {
+        "prediction": prediction,
+        "propensity": propensity,
+        "classification": "SPAM" if prediction else "NOT SPAM"
+    }
+    
+    return jsonify(response)
 
 if __name__ == '__main__':
-    app.run
+    app.run(debug=True)
