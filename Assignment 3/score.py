@@ -1,14 +1,19 @@
-import pickle
+import joblib
 
-with open("model.pkl", "rb") as f:
-    model = pickle.load(f)
-
-with open("vectorizer.pkl", "rb") as f:
-    vectorizer = pickle.load(f)
+# Loading the model and vectorizer
+model = joblib.load("model.pkl")
+vectorizer = joblib.load("vectorizer.pkl")  # Load the vectorizer
 
 def score(text: str, model, threshold: float):
-    X_text = vectorizer.transform([text])  # Transform text using vectorizer
-    proba = model.predict_proba(X_text)[0][1]
-    prediction = 1 if proba >= threshold else 0
-    return prediction, proba
+    # Transforming text using vectorizer
+    text_vector = vectorizer.transform([text])  # Convert text to numerical features
+
+    # Get the probability
+    propensity = model.predict_proba(text_vector)[0][1]  # Assuming binary classification
+
+    # prediction based on threshold
+    prediction = int(propensity >= threshold)
+    
+    return prediction, propensity
+
 
