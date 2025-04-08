@@ -1,0 +1,15 @@
+#!/bin/sh
+
+echo "Running pre-commit checks..."
+
+# Run pytest with coverage
+coverage run -m unittest test.py
+coverage report --include=app.py,score.py,test.py > coverage.txt
+
+# Exit if tests fail
+if [ $? -ne 0 ]; then
+    echo "Tests failed. Commit aborted."
+    exit 1
+fi
+
+echo "All checks passed!"
